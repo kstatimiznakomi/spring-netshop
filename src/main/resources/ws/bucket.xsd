@@ -1,0 +1,27 @@
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://newnetshop.com/shopnetnew/ws/bucket"
+        targetNamespace="http://newnetshop.com/shopnetnew/ws/bucket"
+        elementFormDefault="qualified">
+    <xs:element name="getBucketRequest">
+        <xs:complexType>
+            <xs:sequence/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getBucketResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="buckets" type="tns:bucketWS" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="bucketWS">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="price" type="xs:decimal"/>
+        </xs:sequence>
+    </xs:complexType>
+</schema>
