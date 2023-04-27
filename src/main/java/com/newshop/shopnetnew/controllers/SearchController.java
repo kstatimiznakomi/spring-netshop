@@ -14,14 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/products?q=")
+@RequestMapping
 @AllArgsConstructor
 public class SearchController {
     private final ProductService productService;
-    @GetMapping("")
-    public String searchByKeyword(){
-        return "products";
-    }
     @PostMapping("{keyword}")
     public String searchByKeyword(@PathVariable("keyword") String keyword, Model model){
         model.addAttribute("query", new ProductDTO());

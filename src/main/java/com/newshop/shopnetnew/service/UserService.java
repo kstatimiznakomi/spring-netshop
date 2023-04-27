@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserService extends UserDetailsService {
     boolean save(UserDTO userDTO);
     boolean saveFromAdmin(UserDTO userDTO);
-    Order getOrderByUser(User user);
     void save(User user);
     boolean exist(UserDTO userDTO);
    List<UserDTO> getAll();

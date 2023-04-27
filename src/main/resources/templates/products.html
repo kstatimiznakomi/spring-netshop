@@ -30,27 +30,15 @@
         <div class="col-sm cats-brands">
             <span>Категории</span>
             <select id="categories">
-                <option value="all">None</option>
-                <option value="smartphone">Смартфоны</option>
-                <option value="tablets">Планшеты</option>
-                <option value="notebooks">Ноутбуки</option>
-                <option value="computers">Компьютеры</option>
+                <option value="none"></option>
+                <option th:each="category : ${categories}" th:text="${category.name}" th:value="${category.getId()}"></option>
             </select>
         </div>
         <div class="col-2 cats-brands">
             <span>Бренды</span>
             <select id="brands">
-                <option value="all">None</option>
-                <option value="apple">Apple</option>
-                <option value="msi">MSI</option>
-                <option value="sony">Sony</option>
-                <option value="realme">Realme</option>
-                <option value="itel">Itel</option>
-                <option value="nokia">Nokia</option>
-                <option value="blackview">Blackview</option>
-                <option value="oukitel">Oukitel</option>
-                <option value="infinix">Infinix</option>
-                <option value="onenote">One Note</option>
+                <option value="none">None</option>
+                <option th:each="brand : ${brands}" th:text="${brand.name}" th:value="${brand.getId()}"></option>
             </select>
         </div>
     </div>
@@ -61,6 +49,9 @@
             <div th:text="${product.price}" class="col-1"></div>
             <div class="col-3">
                 <a th:href="@{/products/{id}/bucket(id=${product.id})}" class="add-to-bucket button">Добавить в корзину</a>
+            </div>
+            <div class="col-3">
+                <a th:href="@{/products/{id}/order(id=${product.id})}" class="add-to-bucket button">Добавить в заказ</a>
             </div>
         </div>
 

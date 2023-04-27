@@ -41,6 +41,15 @@ public class BucketController {
         }
         return "bucket";
     }
+    @GetMapping("/{id}/order")
+    public String addOrder(@PathVariable Long id, Principal principal){
+        if(principal == null){
+            return "redirect:/products";
+        }
+        bucketService.commitBucketToOrder(principal.getName());
+        return "redirect:/bucket";
+    }
+
     @GetMapping("/{productId}/delete")
     public String deleteBucket(@PathVariable Long productId, Principal principal){
         sessionObjectHolder.addClick();

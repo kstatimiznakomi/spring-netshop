@@ -1,8 +1,11 @@
 package com.newshop.shopnetnew.controllers;
 
-import com.newshop.shopnetnew.dao.ProductRepository;
 import com.newshop.shopnetnew.domain.Product;
+import com.newshop.shopnetnew.dto.BrandDTO;
+import com.newshop.shopnetnew.dto.CategoryDTO;
 import com.newshop.shopnetnew.dto.ProductDTO;
+import com.newshop.shopnetnew.service.BrandService;
+import com.newshop.shopnetnew.service.CategoryService;
 import com.newshop.shopnetnew.service.ProductService;
 import com.newshop.shopnetnew.service.SessionObjectHolder;
 import org.springframework.data.domain.Page;
@@ -22,17 +25,25 @@ public class ProductController {
 
     private final ProductService productService;
     private final SessionObjectHolder sessionObjectHolder;
+    private final CategoryService categoryService;
+    private final BrandService brandService;
 
-    public ProductController(ProductService productService, SessionObjectHolder sessionObjectHolder) {
+    public ProductController(ProductService productService, SessionObjectHolder sessionObjectHolder, CategoryService categoryService, BrandService brandService) {
         this.productService = productService;
         this.sessionObjectHolder = sessionObjectHolder;
+        this.categoryService = categoryService;
+        this.brandService = brandService;
     }
 
     @GetMapping
     public String list(Model model){
         sessionObjectHolder.addClick();
         List<ProductDTO> list = productService.getAll();
+        List<CategoryDTO> categories = categoryService.getAll();
+        List<BrandDTO> brands = brandService.getAll();
         model.addAttribute("products", list);
+        model.addAttribute("categories", categories);
+        model.addAttribute("brands", brands);
         return "products";
     }
 
@@ -62,6 +73,11 @@ public class ProductController {
         return "products";
     }
 
+    @GetMapping("?c={categoryId}")
+    public String searchByCategory(@PathVariable("categoryId") Long categoryId, Model model){
+        return null;
+    }
+
     @GetMapping("/{id}/bucket")
     public String addBucket(@PathVariable Long id, Principal principal){
         sessionObjectHolder.addClick();
@@ -69,6 +85,14 @@ public class ProductController {
             return "redirect:/products";
         }
         productService.addToUserBucket(id, principal.getName());
+        return "redirect:/products";
+    }
+    @GetMapping("/{id}/order")
+    public String addOrder(@PathVariable Long id, Principal principal){
+        if(principal == null){
+            return "redirect:/products";
+        }
+        productService.addToUserOrder(id, principal.getName());
         return "redirect:/products";
     }
 

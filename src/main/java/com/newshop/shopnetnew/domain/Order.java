@@ -19,10 +19,10 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "orders")
-public class Order implements Serializable {
+public class Order {
     private static final String SEQ_NAME = "order_seq";
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = SEQ_NAME)
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
     private Long id;
     @CreationTimestamp
@@ -33,8 +33,8 @@ public class Order implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
     private BigDecimal sum;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Product> details;
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    private List<OrderDetails> details;
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 }

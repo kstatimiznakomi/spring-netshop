@@ -1,5 +1,6 @@
 package com.newshop.shopnetnew.service;
 
+import com.newshop.shopnetnew.domain.Category;
 import com.newshop.shopnetnew.dto.CategoryDTO;
 import com.newshop.shopnetnew.dto.ProductDTO;
 

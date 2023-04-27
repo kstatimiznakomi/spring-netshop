@@ -1,17 +1,27 @@
 package com.newshop.shopnetnew.service;
 
-import com.newshop.shopnetnew.domain.Bucket;
 import com.newshop.shopnetnew.domain.Order;
+import com.newshop.shopnetnew.domain.OrderStatus;
 import com.newshop.shopnetnew.domain.User;
-import com.newshop.shopnetnew.dto.BucketDTO;
 import com.newshop.shopnetnew.dto.OrderDTO;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
+@Service
 public interface OrderService {
     List<OrderDTO> getAll();
     Order getOrderByUser(User user);
-    OrderDTO getOrderByUser(String name);
-    void addProducts(Order order, List<Long> productIds);
+    List<Order> getOrdersByUser(String name);
+    OrderDTO getOrderByUser(Long id);
 
-    void deleteFromOrder(Long productId, String username);
+    @Transactional
+    void saveOrder(Order order);
+
+    Order getOrderByStatusAndUser(OrderStatus status, User user);
+
+    void addProducts(Order order);
+
+    void deleteProducts(Order order, List<Long> productIds, User user);
 }

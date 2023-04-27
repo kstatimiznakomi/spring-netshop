@@ -2,7 +2,7 @@
 <html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Корзина</title>
+    <title>Заказ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
@@ -15,25 +15,27 @@
 </head>
 <body>
 <div th:insert="~{menu :: #nav-menu}"></div>
-<div sec:authorize="!isAuthenticated()">
-    <div th:insert="~{bucket-empty :: #bucket-na}"></div>
-</div>
 <div class="container">
-    <div sec:authorize="isAuthenticated()" class="bucket-container">
-        <h2 id="bucket">Корзина</h2>
+    <div class="bucket-container">
+        <h2 id="bucket">Заказы</h2>
         <div class="row item">
-            <div class="col-4">Название</div>
+            <div class="col-2">Идентификатор</div>
             <div class="col-1">Количество</div>
-            <div class="col-1">Цена</div>
+            <div class="col-2">Создан</div>
+            <div class="col-2">Обновлён</div>
+            <div class="col-1">Статус</div>
             <div class="col-1">Сумма</div>
         </div>
-        <div th:each="detail : ${bucketDto.bucketDetails}" class="row item">
-            <div th:text="${detail.title}" class="col-4 under-item"></div>
-            <div th:text="${detail.amount}" class="col-1 under-item"></div>
-            <div th:text="${detail.price}" class="col-1 under-item"></div>
-            <div th:text="${detail.sum}" class="col-1 under-item"></div>
-            <div><a th:href="@{/bucket/{id}/order(id=${detail.getId()})}" class="add-to-bucket button">Добавить в заказ</a></div>
-            <div><a th:href="@{/bucket/{id}/delete(id=${detail.getId()})}" class="add-to-bucket button">Удалить из корзины</a></div>
+        <div th:each="order : ${orders}" class="row item">
+            <a th:text="${order.getId()}" th:href="@{/orders/{id}(id=${order.getId()})}" class="col-2 under-item order-id"></a>
+            <div th:text="${order.getDetails().size()}" class="col-1 under-item"></div>
+            <div th:text="${order.getCreated()}" class="col-2 under-item"></div>
+            <div th:text="${order.getUpdated()}" class="col-2 under-item"></div>
+            <div th:text="${order.getStatus()}" class="col-1 under-item"></div>
+            <div th:text="${order.getSum()}" class="col-1 under-item"></div>
+           <!-- <div class="col-3">
+                <a th:href="@{/products/{id}/bucket(id=${product.id})}" class="add-to-bucket button">Удалить из заказа</a>
+            </div> -->
         </div>
         <div class="row">
             <div class="col-4"></div>
@@ -43,6 +45,5 @@
         </div>
     </div>
 </div>
-
 </body>
 </html>

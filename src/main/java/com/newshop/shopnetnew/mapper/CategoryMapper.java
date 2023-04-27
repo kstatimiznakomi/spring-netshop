@@ -14,8 +14,7 @@ import java.util.List;
 public interface CategoryMapper {
     CategoryMapper MAPPER = Mappers.getMapper(CategoryMapper.class);
     Category toCategory(CategoryDTO dto);
-    @InheritInverseConfiguration
-    CategoryDTO fromCategory(Category category);
+    List<CategoryDTO> fromCategory(List<Category> categories);
     List<Category> toCategoryList(List<CategoryDTO> categoryDTOS);
     List<CategoryDTO> formCategoryList(List<Category> categories);
 }

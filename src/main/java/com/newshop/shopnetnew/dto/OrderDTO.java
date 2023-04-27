@@ -1,10 +1,14 @@
 package com.newshop.shopnetnew.dto;
 
+import com.newshop.shopnetnew.domain.OrderDetails;
 import com.newshop.shopnetnew.domain.OrderStatus;
+import com.newshop.shopnetnew.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,21 +17,26 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderDTO {
     private Long orderId;
-    private String nickname;
-    private int amountProducts;
-    private Double sum;
-    private OrderStatus status;
-    private String personName;
-    private String address;
-    private List<OrderDetailsDTO> details = new ArrayList<>();
+    private Long user;
+    private String created;
+    private String updated;
+    private String status;
+    private List<OrderDetailsDTO> details;
 
-    public void oAggregate(){
-        this.amountProducts = this.details.size();
-        this.sum = details.stream()
-                .map(OrderDetailsDTO::getSum)
-                .mapToDouble(Double::doubleValue)
-                .sum();
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class OrderDetailsDTO {
+        private String product;
+        private Double price;
+        private Double amount;
+        private Double sum;
+        
+        public OrderDetailsDTO(OrderDetails details) {
+            this.product = details.getProducts().getName();
+            this.price = details.getPrice().doubleValue();
+            this.amount = details.getAmount().doubleValue();
+            this.sum = details.getPrice().multiply(details.getAmount()).doubleValue();
+        }
     }
-
 }
-

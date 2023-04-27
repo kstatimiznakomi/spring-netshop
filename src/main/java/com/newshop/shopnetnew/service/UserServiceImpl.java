@@ -100,10 +100,7 @@ public class UserServiceImpl implements UserService{
         return true;
     }
 
-    @Override
-    public Order getOrderByUser(User user) {
-        return orderRepository.getOrderByUser(user);
-    }
+
 
     @Override
     public void save(User user) {
