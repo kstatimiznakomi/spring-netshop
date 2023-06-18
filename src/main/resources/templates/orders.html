@@ -2,7 +2,7 @@
 <html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Заказ</title>
+    <title>Заказы</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
@@ -12,30 +12,50 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="icon" type="image/png" sizes="16x16" href="/image/logo_v1.jpg">
+
 </head>
 <body>
-<div th:insert="~{menu :: #nav-menu}"></div>
+<div th:replace="~{menu :: nav-menu}"></div>
 <div class="container">
     <div class="bucket-container">
-        <h2 id="bucket">Заказы</h2>
+        <h2 id="bucket">Заказы пользователя <span th:text="${principal.name}"></span></h2>
         <div class="row item">
-            <div class="col-2">Идентификатор</div>
+            <div class="col-1">Номер</div>
             <div class="col-1">Количество</div>
             <div class="col-2">Создан</div>
             <div class="col-2">Обновлён</div>
-            <div class="col-1">Статус</div>
+            <div class="col-2">Статус</div>
             <div class="col-1">Сумма</div>
         </div>
+
         <div th:each="order : ${orders}" class="row item">
-            <a th:text="${order.getId()}" th:href="@{/orders/{id}(id=${order.getId()})}" class="col-2 under-item order-id"></a>
+            <a th:text="${order.getId()}" th:href="@{/orders/{id}(id=${order.getId()})}"
+               class="col-1 under-item order-id-color"></a>
             <div th:text="${order.getDetails().size()}" class="col-1 under-item"></div>
             <div th:text="${order.getCreated()}" class="col-2 under-item"></div>
             <div th:text="${order.getUpdated()}" class="col-2 under-item"></div>
-            <div th:text="${order.getStatus()}" class="col-1 under-item"></div>
-            <div th:text="${order.getSum()}" class="col-1 under-item"></div>
-           <!-- <div class="col-3">
-                <a th:href="@{/products/{id}/bucket(id=${product.id})}" class="add-to-bucket button">Удалить из заказа</a>
-            </div> -->
+
+
+            <div class="col-2 under-item-status green" th:if="${order.getStatus() == orderStatusNew}">
+                <span th:text="${order.getStatus()}"></span>
+            </div>
+            <div class="col-2 under-item-status going-status" th:if="${order.getStatus() == orderStatusGoing}">
+                <span th:text="${order.getStatus()}"></span>
+            </div>
+            <div class="col-2 under-item-status delivered-status" th:if="${order.getStatus() == orderStatusDelivered}">
+                <span th:text="${order.getStatus().DELIVERED}"></span>
+            </div>
+            <div class="col-2 under-item-status red" th:if="${order.getStatus() == orderStatusCancelled}">
+                <span th:text="${order.getStatus().CANCELLED}"></span>
+            </div>
+
+
+            <div class="col-1 under-item">
+                <span th:text="${order.getSum()}"></span><span>&nbsp;₽</span>
+            </div>
+            <div class="col-3 under-item" th:if="${order.getStatus() == orderStatusNew}">
+                <a th:href="@{/orders/cancel/{id}(id=${order.getId()})}" class="add-to-bucket button">Отменить заказ</a>
+            </div>
         </div>
         <div class="row">
             <div class="col-4"></div>

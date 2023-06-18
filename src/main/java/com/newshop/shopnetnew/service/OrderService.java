@@ -14,14 +14,24 @@ public interface OrderService {
     List<OrderDTO> getAll();
     Order getOrderByUser(User user);
     List<Order> getOrdersByUser(String name);
+
+    List<Order> getOrdersByPoint(Long point);
+
     OrderDTO getOrderByUser(Long id);
+
+    void addProducts(Order order, List<Long> productsIds);
 
     @Transactional
     void saveOrder(Order order);
 
     Order getOrderByStatusAndUser(OrderStatus status, User user);
 
-    void addProducts(Order order);
+    void addProductsFromProducts(Order order, Long productId);
 
-    void deleteProducts(Order order, List<Long> productIds, User user);
+    @Transactional
+    void addToUserBucket(Long orderId, Long pointId);
+
+    void createOrder(User user);
+
+    void deleteProducts(Order order, List<Long> productIds);
 }

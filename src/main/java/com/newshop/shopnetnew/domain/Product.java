@@ -23,13 +23,9 @@ public class Product {
     private Long id;
     private String name;
     private Double price;
+    private String img;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "category_products", joinColumns = @JoinColumn(name = "product_id"),
-            inverseForeignKey = @ForeignKey(name = "category_id"))
-    @JoinColumn(name = "category_id")
     private Category category;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "brand_products", joinColumns = @JoinColumn(name = "product_id"),
-            inverseForeignKey = @ForeignKey(name = "brand_id"))
     private Brand brand;
 }

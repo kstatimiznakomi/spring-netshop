@@ -10,10 +10,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="icon" type="image/png" sizes="16x16" href="/image/logo_v1.jpg">
+
 </head>
 <body>
-<div th:insert="~{menu :: #nav-menu}"></div>
-<div id="order-empty" class="order-empty">
+<div th:replace="~{menu :: nav-menu}"></div>
+<div id="order-empty" class="empty">
     <h2 class="not-auth">Заказы</h2>
     <p class="not-auth">Вы пока ещё ничего не заказали</p>
     <p class="not-auth">Перейдите в <a th:href="@{/products}">товары</a> для заказа</p>

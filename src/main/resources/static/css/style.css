@@ -14,11 +14,19 @@
     width: 490px;
 }
 
+
+
 .order-inputs{
     width: 1000px;
     padding: 5px;
     margin-top: 15px;
     margin-bottom: 15px;
+}
+
+td{
+    background-color: #ffdb66;
+    border-radius: 5px;
+    padding: 10px;
 }
 
 .button{
@@ -28,13 +36,32 @@
     padding: 20px;
 }
 
-.bucket-empty{
+.button-user{
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+}
+
+.empty{
     width: 100%;
     height: 500px;
     flex-direction: column;
     justify-content: center;
     position: absolute;
     transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+}
+
+.form-search{
+    width: 50%;
+    height: 500px;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    transform: translate(-10%, -30%);
     left: 50%;
     top: 50%;
 }
@@ -92,8 +119,18 @@ div > a:hover{
     margin-top: 15px;
     width: 1262px;
 }
+
 .under-item{
-    horiz-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.under-item-status{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    text-align: center;
 }
 
 .cats-brands{
@@ -103,20 +140,142 @@ div > a:hover{
 }
 
 .pages{
+    margin-top: 10px;
     height: 100%;
     width: 100%;
-    margin-left: 15px;
 }
+
+.col-null{
+    flex-grow: 0;
+    margin-bottom: 20px;
+}
+
+.page-digits-bg-link{
+    color: #0064ff;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+.page-digits-bg-link:hover{
+    color: #ffb016;
+}
+.page-digits-bg{
+    color: #000000;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
 
 .bucket-container{
     width: 1262px;
     height: 100%;
 }
 
-#bucket{
+.bucket{
     margin-left: 15px;
     align-content: center;
     justify-content: center;
+}
+
+.to-orders{
+    color: #0064ff;
+    margin-top: 15px;
+}
+
+.to-orders:hover{
+    color: #ffb016;
+}
+
+.buy-button{
+    color: #0064ff;
+    margin-top: 25px;
+    margin-bottom: 40px;
+}
+
+.green{
+    background-color: #abffab;
+}
+
+.gray{
+    background-color: #d5d5d5;
+}
+
+.red{
+    background-color: #ff856a;
+}
+
+.going-status{
+    background-color: #4b4cff;
+}
+
+.delivered-status{
+    background-color: #4b4cff;
+}
+
+.modal{
+    display: none; /* По умолчанию окно закрыто */
+    z-index: 10; /* Чтобы сделать окно поверх всех элементов */
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный темный фон */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: scroll; /* При переполнении окна делаем скролл */
+    padding: 20px;
+}
+
+.modal--open {
+    display: flex; /* Модификатор для открытого окна */
+}
+
+.modal__box {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.modal__title {
+    color: #111;
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.modal__info {
+    color: #111;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.modal__bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lock {
+    overflow-y: hidden;
+}
+
+#order-in-details{
+    width: 25px;
+    text-align: center;
+}
+
+.buy-button:hover{
+    color: #ffb016;
 }
 
 .add-to-bucket{
@@ -127,15 +286,18 @@ div > a:hover{
     color: #ffb016;
 }
 
-.order-id{
+.order-id-color{
     color: #0064ff;
 }
 
-.order-id:hover{
+.order-id-color:hover{
     color: #ffb016;
 }
 
-#name{
+textarea{
+    border-radius: 10px;
+    padding: 10px;
+    outline: none;
     width: 1000px;
 }
 
@@ -166,6 +328,11 @@ input{
 
 select{
     border-radius: 10px;
+    outline: none;
+}
+
+.img{
+    width: 50%;
 }
 
 .search-button{
@@ -177,10 +344,22 @@ select{
 }
 
 button{
+    outline: none;
     border-style: none;
     border-radius: 10px;
 }
+
+.button-add-product{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    background-color: #f5f5f5;
+    padding: 20px;
+}
+
 input{
+    padding: 5px;
+    outline: none;
     border-style: none;
     border-radius: 10px;
 }
@@ -192,12 +371,17 @@ table{
     justify-content: center;
 }
 
-.login{
-    height: 10em;
-    width: 88em;
+.user-form-1{
+    justify-content: center;
+    position: relative;
     display: flex;
-    align-items: center;
-    align-content: center;
+}
+
+.login{
+    margin-top: 25px;
+    height: 10em;
+    display: flex;
+    justify-content: center;
 }
 
 .categories-a{

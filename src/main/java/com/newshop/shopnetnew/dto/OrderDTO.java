@@ -4,6 +4,7 @@ import com.newshop.shopnetnew.domain.OrderDetails;
 import com.newshop.shopnetnew.domain.OrderStatus;
 import com.newshop.shopnetnew.domain.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,22 +22,26 @@ public class OrderDTO {
     private String created;
     private String updated;
     private String status;
-    private List<OrderDetailsDTO> details;
+    private List<OrderDetailsDTO> details = new ArrayList<>();
+    private Double totalPrice;
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    @Builder
     public static class OrderDetailsDTO {
         private String product;
         private Double price;
         private Double amount;
         private Double sum;
-        
+        private String img;
+
         public OrderDetailsDTO(OrderDetails details) {
             this.product = details.getProducts().getName();
             this.price = details.getPrice().doubleValue();
             this.amount = details.getAmount().doubleValue();
             this.sum = details.getPrice().multiply(details.getAmount()).doubleValue();
+            this.img = details.getImg();
         }
     }
 }

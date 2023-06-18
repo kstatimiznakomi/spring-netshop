@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<div class="row" th:fragment="cb()">
+    <div class="col-2 cats-brands">
+      <span>Категории</span>
+      <select id="categories" name="cat">
+        <option value="0">None</option>
+        <option th:each="category : ${categories}" th:text="${category.name}" th:value="${category.getId()}"></option>
+      </select>
+    </div>
+    <div class="col-1 cats-brands">
+      <span>Бренды</span>
+      <select id="brands" name="br">
+        <option value="0">None</option>
+        <option th:each="brand : ${brands}" th:text="${brand.name}" th:value="${brand.getId()}"></option>
+      </select>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Страница входа</title>
@@ -9,9 +9,10 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="/css/style.css">
+
 </head>
 <body>
-<div th:insert="~{menu :: #nav-menu}"></div>
+<div th:replace="~{menu :: nav-menu}"></div>
 <p th:if="${loginError}" class="error">Неверный логин или пароль</p>
 <div class="login">
   <form th:action="@{/auth}" method="post">

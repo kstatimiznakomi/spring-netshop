@@ -1,6 +1,5 @@
 package com.newshop.shopnetnew.endpoint;
 
-import com.newshop.shopnetnew.domain.Product;
 import com.newshop.shopnetnew.dto.ProductDTO;
 import com.newshop.shopnetnew.service.ProductService;
 import com.newshop.shopnetnew.ws.Products.GetProductsRequest;

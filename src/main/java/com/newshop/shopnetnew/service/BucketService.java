@@ -9,12 +9,18 @@ import java.security.Principal;
 import java.util.List;
 
 public interface BucketService {
-    Bucket createBucket(User user);
+    //IMPORTANT FOR SALES
     void addProducts(Bucket bucket, List<Long> productIds);
     BucketDTO getBucketByUser(String name);
     Bucket getBucketByUser(User user);
+
+    void save(Bucket bucket);
+
     void deleteProducts(Bucket bucket, List<Long> productIds);
 
     @Transactional
-    void commitBucketToOrder(String username);
+    void commitAllBucketToOrder(String username);
+
+    @Transactional
+    void commitOneBucketToOrder(String username, Long id);
 }

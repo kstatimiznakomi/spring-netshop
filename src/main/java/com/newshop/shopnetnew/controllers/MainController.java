@@ -1,25 +1,32 @@
 package com.newshop.shopnetnew.controllers;
 
-import com.newshop.shopnetnew.dto.UserDTO;
-import com.newshop.shopnetnew.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.newshop.shopnetnew.dto.BrandDTO;
+import com.newshop.shopnetnew.dto.CategoryDTO;
+import com.newshop.shopnetnew.service.BrandService;
+import com.newshop.shopnetnew.service.CategoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping({"", "/"})
 public class MainController {
-    private final UserService userService;
-    public MainController(UserService userService) {
-        this.userService = userService;
+    private final CategoryService categoryService;
+    private final BrandService brandService;
+    public MainController(CategoryService categoryService, BrandService brandService) {
+        this.categoryService = categoryService;
+        this.brandService = brandService;
     }
 
-    public String index(){
+    @GetMapping("/")
+    public String index(Model model){
+        List<CategoryDTO> categories = categoryService.getAll();
+        List<BrandDTO> brands = brandService.getAll();
+        model.addAttribute("categories", categories);
+        model.addAttribute("brands", brands);
         return "index";
     }
     @RequestMapping("/login")
@@ -29,7 +36,6 @@ public class MainController {
         }
         return "login";
     }
-
 
     @RequestMapping("/login-error")
     public String loginError(Model model) {

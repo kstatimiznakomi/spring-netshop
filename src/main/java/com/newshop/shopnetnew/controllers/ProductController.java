@@ -1,13 +1,15 @@
 package com.newshop.shopnetnew.controllers;
 
 import com.newshop.shopnetnew.domain.Product;
+import com.newshop.shopnetnew.domain.Role;
+import com.newshop.shopnetnew.domain.User;
 import com.newshop.shopnetnew.dto.BrandDTO;
 import com.newshop.shopnetnew.dto.CategoryDTO;
 import com.newshop.shopnetnew.dto.ProductDTO;
-import com.newshop.shopnetnew.service.BrandService;
-import com.newshop.shopnetnew.service.CategoryService;
-import com.newshop.shopnetnew.service.ProductService;
-import com.newshop.shopnetnew.service.SessionObjectHolder;
+import com.newshop.shopnetnew.service.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,37 +20,24 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/products")
+@AllArgsConstructor
 public class ProductController {
-
     private final ProductService productService;
-    private final SessionObjectHolder sessionObjectHolder;
+    private final UserService userService;
     private final CategoryService categoryService;
     private final BrandService brandService;
 
-    public ProductController(ProductService productService, SessionObjectHolder sessionObjectHolder, CategoryService categoryService, BrandService brandService) {
-        this.productService = productService;
-        this.sessionObjectHolder = sessionObjectHolder;
-        this.categoryService = categoryService;
-        this.brandService = brandService;
-    }
-
     @GetMapping
-    public String list(Model model){
-        sessionObjectHolder.addClick();
-        List<ProductDTO> list = productService.getAll();
-        List<CategoryDTO> categories = categoryService.getAll();
-        List<BrandDTO> brands = brandService.getAll();
-        model.addAttribute("products", list);
-        model.addAttribute("categories", categories);
-        model.addAttribute("brands", brands);
-        return "products";
+    public String goToPage(){
+        return "redirect:/products/page=1";
     }
 
-    @GetMapping("?p={pageNumber}")
-    public String listProductsOther(Model model, @PathVariable("pageNumber") int pageNumber){
+    @GetMapping("/page={pageNumber}")
+    public String listProductsOther(Principal principal, Model model, @PathVariable("pageNumber") int pageNumber){
         Page<Product> page = productService.getAllPage(pageNumber);
         int totalPages = page.getTotalPages();
         if (pageNumber < 1) {
@@ -57,30 +46,58 @@ public class ProductController {
         if (pageNumber > totalPages) {
             return "redirect:/products?p=" + totalPages;
         }
+        if(principal == null){
+            return listPage(model, pageNumber);
+        }
+        User user = userService.findByName(principal.getName());
+        if (Objects.equals(user.getRole(), Role.ADMIN)){
+            return listPageAdmin(model, pageNumber);
+        }
+        else {
+            return listPage(model, pageNumber);
+        }
+    }
 
-        return listPage(model, pageNumber);
+    public String listPageAdmin(Model model, int pageNumber){
+        Page<Product> page = productService.getAllPage(pageNumber);
+        List<CategoryDTO> categories = categoryService.getAll();
+        List<BrandDTO> brands = brandService.getAll();
+        model.addAttribute("categories", categories);
+        model.addAttribute("brands", brands);
+
+        long totalItems = page.getTotalElements();
+        long totalPages = page.getTotalPages();
+        List<Product> listProducts = page.getContent();
+        model.addAttribute("currentPage", pageNumber);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("search", null);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("listProducts", listProducts);
+        return "products-admin";
     }
 
     public String listPage(Model model, int pageNumber){
         Page<Product> page = productService.getAllPage(pageNumber);
+        List<CategoryDTO> categories = categoryService.getAll();
+        List<BrandDTO> brands = brandService.getAll();
+        model.addAttribute("categories", categories);
+        model.addAttribute("brands", brands);
+
         long totalItems = page.getTotalElements();
-        int totalPages = page.getTotalPages();
+        long totalPages = page.getTotalPages();
         List<Product> listProducts = page.getContent();
         model.addAttribute("currentPage", pageNumber);
         model.addAttribute("totalItems", totalItems);
+        model.addAttribute("search", null);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("listProducts", listProducts);
         return "products";
     }
 
-    @GetMapping("?c={categoryId}")
-    public String searchByCategory(@PathVariable("categoryId") Long categoryId, Model model){
-        return null;
-    }
+
 
     @GetMapping("/{id}/bucket")
     public String addBucket(@PathVariable Long id, Principal principal){
-        sessionObjectHolder.addClick();
         if(principal == null){
             return "redirect:/products";
         }
@@ -96,15 +113,14 @@ public class ProductController {
         return "redirect:/products";
     }
 
-    @PostMapping
-    public ResponseEntity<Void> addProduct(ProductDTO dto){
-        productService.addProduct(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @MessageMapping("/products")
-    public void messageAddProduct(ProductDTO dto){
-        productService.addProduct(dto);
+    @PostMapping("/add")
+    public String addProduct(@RequestParam String name, @RequestParam Double price, @RequestParam String img){
+        Product product = productService.getProductByName(name);
+        if (product == null) {
+            productService.addProduct(name, price, img);
+            return "redirect:/products";
+        }
+        else throw new RuntimeException("Товар уже существует");
     }
 
     @GetMapping("/{id}")

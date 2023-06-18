@@ -22,11 +22,9 @@ public class User {
     private String personName;
     private String password;
     private String email;
-    private boolean archive;
+    private boolean activated;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private Bucket bucket;
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 }

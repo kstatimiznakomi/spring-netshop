@@ -13,6 +13,7 @@ public class ErrorControllerAdvice {
     public String exception(Exception exception, Model model){
         String errorMessage = (exception != null ? exception.getMessage() : "Unknown error");
         model.addAttribute("errorMessage", errorMessage);
+        model.addAttribute("search", null);
         return "error";
     }
 }

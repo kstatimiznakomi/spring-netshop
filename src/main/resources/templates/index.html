@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Net-Shop</title>
@@ -23,14 +23,26 @@
 
 </head>
 <body>
-<div th:insert="~{menu :: #nav-menu}"></div>
-
-
-
+<div th:replace="~{menu-main-page :: nav-menu-main-page}"></div>
+<div class="form-search">
+    <form th:action="@{/search}" method="get" id="form-search">
+        <input id="text" type="search" name="q" placeholder="Введите название товара">
+        <div class="col-2 cats-brands">
+            <span>Категории</span>
+            <select id="categories" name="cat">
+                <option value="0">None</option>
+                <option th:each="category : ${categories}" th:text="${category.name}" th:value="${category.getId()}"></option>
+            </select>
+        </div>
+        <div class="col-1 cats-brands">
+            <span>Бренды</span>
+            <select id="brands" name="br">
+                <option value="0">None</option>
+                <option th:each="brand : ${brands}" th:text="${brand.name}" th:value="${brand.getId()}"></option>
+            </select>
+        </div>
+        <button type="submit"><img src="/image/search.png" alt="поиск" class="search-button"></button>
+    </form>
 </div>
-
-
-
-
 </body>
 </html>

@@ -59,11 +59,7 @@ public class UserServiceImpl implements UserService{
                     .password(passwordEncoder.encode(userDTO.getPassword()))
                     .email(userDTO.getEmail())
                     .role(Role.CLIENT)
-                    .bucket(Bucket.builder().build())
                     .build();
-            userRepository.save(newUser);
-            Bucket bucket = bucketService.getBucketByUser(newUser);
-            newUser.setBucket(bucket);
             userService.save(newUser);
         }
         return true;
@@ -71,15 +67,12 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean exist(UserDTO userDTO) {
         if (!Objects.equals(userDTO.getPassword(), userDTO.getMatchingPassword())){
-            throw new RuntimeException("Неправильный пароль");
+            throw new RuntimeException("Пароли не совпадают");
         }
 
         User user = userRepository.findFirstByUsername(userDTO.getUsername());
 
-        if(user == null) {
-            return false;
-        }
-        return true;
+        return user != null;
     }
 
     @Override
@@ -94,7 +87,6 @@ public class UserServiceImpl implements UserService{
                 .password(passwordEncoder.encode(userDTO.getPassword()))
                 .email(userDTO.getEmail())
                 .role(Role.CLIENT)
-                .bucket(new Bucket())
                 .build();
         userRepository.save(user);
         return true;
@@ -119,9 +111,11 @@ public class UserServiceImpl implements UserService{
 
     private UserDTO toDto(User user) {
         return UserDTO.builder()
+                .id(user.getId())
                 .username(user.getUsername())
                 .personName(user.getPersonName())
                 .email(user.getEmail())
+                .role(user.getRole())
                 .build();
     }
 
@@ -159,7 +153,7 @@ public class UserServiceImpl implements UserService{
         User savedUser = userRepository.findFirstByUsername(dto.getUsername());
         if(savedUser == null) throw new RuntimeException("User not found by name: " + dto.getUsername());
         boolean isChanged = false;
-        if(dto.getPassword() != null && !dto.getPassword().isEmpty()){
+        if(!dto.getPassword().isEmpty() && !Objects.equals(dto.getPassword(), savedUser.getPassword())){
             savedUser.setPassword(passwordEncoder.encode(dto.getPassword()));
             isChanged = true;
         }

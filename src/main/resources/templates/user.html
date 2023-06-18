@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Добавление пользователя</title>
@@ -14,6 +14,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
   <script src=https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js></script>
 
+
   <!--app.js dependance: jquery-->
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -23,7 +24,7 @@
 
 </head>
 <body>
-<div th:insert="~{menu :: #nav-menu}"></div>
+<div th:replace="~{menu :: nav-menu}"></div>
 
 <form th:action="@{/users/new}" id="userFormForAdmin" th:object="${user}" method="post">
   <table>

@@ -50,7 +50,6 @@ public class SecurityConfig {
                 .requestMatchers("/users").hasAnyAuthority(Role.ADMIN.name())
                 .anyRequest().permitAll()
                 .and()
-
                     .formLogin()
                     .loginPage("/login")
                     .failureUrl("/login-error")
